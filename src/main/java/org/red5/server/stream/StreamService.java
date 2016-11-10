@@ -48,6 +48,7 @@ import org.red5.server.api.stream.support.DynamicPlayItem;
 import org.red5.server.api.stream.support.SimplePlayItem;
 import org.red5.server.net.rtmp.Channel;
 import org.red5.server.net.rtmp.RTMPConnection;
+import org.red5.server.net.rtmp.RTMPMinaConnection;
 import org.red5.server.net.rtmp.status.Status;
 import org.red5.server.net.rtmp.status.StatusCodes;
 import org.red5.server.util.ScopeUtils;
@@ -465,6 +466,7 @@ public class StreamService implements IStreamService {
         Map<String, Object> playOptions = new HashMap<String, Object>();
         playOptions.put("oldStreamName", oldStreamName);
         playOptions.put("streamName", streamName);
+        playOptions.put("transition", transition);
         playOptions.put("start", start);
         playOptions.put("len", length);
         playOptions.put("offset", offset);
@@ -546,6 +548,7 @@ public class StreamService implements IStreamService {
             // get the stream id
             Number streamId = conn.getStreamId();
             IStreamCapableConnection streamConn = (IStreamCapableConnection) conn;
+            streamId = streamConn.getStreamsMap().keySet().iterator().next();
             if ("stop".equals(transition)) {
                 play(Boolean.FALSE);
             } else if ("reset".equals(transition)) {
